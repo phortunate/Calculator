@@ -1,0 +1,61 @@
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  background-color: #333333;
+  font-family: "Open Sans", sans-serif;
+
+}
+.container {
+  padding: 32px;
+  margin-top: 64px;
+  width: 475px;
+  height: 500px;
+  background-color: #1E1E1E;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  
+}
+
+.display {
+  height: 84px;
+  background-color: white;
+  border-radius: 8px;
+  margin-bottom: 32px;
+}
+
+.keypad {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px
+}
+.row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+button {
+  font-size: 36px;
+  font-family: "Open Sans", sans-serif;
+  /* padding: 8px 16px; */
+  width: 60px;
+  height: 60px;
+  border: none;
+  /* margin: 8px; */
+  border-radius: 2px;
+
+}
