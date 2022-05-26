@@ -14,7 +14,7 @@ html {
   width: 400px;
   height: 600px;
   border: 1px solid black;
-  margin: 30px auto 0 auto;
+  margin: 60px auto 0 auto;
 }
 
 .wrapper {
@@ -33,15 +33,26 @@ html {
   color: white;
   font-size: 30px;
   /* margin-top: 20px; */
-  padding: 20px 30px 20px 35px;
+  /* padding: 20px 30px 20px 35px; */
   
 }
 
 .buttons {
   display: grid;
+  grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(4, 1fr);
-  grid-template-columns: repeat(5,1fr);
   gap: 1px;
+}
+
+.btn0 {
+  grid-column: 1/3;
+  grid-row: 4;
+  
+}
+
+.btnEQ {
+  grid-column: 5;
+  grid-row: 3/5;
 }
 
 .btnr1 {
