@@ -102,3 +102,7 @@ body {
   color: white;
   border-radius: 0 0 12px 0;
 }
+
+.btnB {
+  padding-bottom: 16px;
+}

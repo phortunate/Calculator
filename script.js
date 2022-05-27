@@ -39,6 +39,47 @@ function removeDigit() {
     input.textContent = digits;
 }
 
+function saveOperator(e) {
+    const opClassTypes = ["btnMult", "btnDiv", "btnMin", "btnPlus"];
+    const operationClass = (Array.from(e.target.classList))
+        .filter(element => opClassTypes.includes(element)).toString();
+        
+    switch (operationClass) {
+    case "btnMult":
+        return multiply;
+    case "btnDiv":
+        return divide;
+    case "btnMin":
+        return subtract;
+    case "btnPlus":
+        return add;
+    default:
+        break;
+}
+}
+let operator;
+let operand1;
+let operand2;
+let canClearDisplay = false;
+let operatorSelected = false;
+function saveState(e) {
+    if (!operatorSelected && !operand1) {
+        operand1 = parseInt(input.textContent);
+        operatorSelected = true;
+        console.log(operand1);
+    } else if (!operatorSelected && !operand2) {
+        operand2 = parseInt(input.textContent);
+        clearDisplay();
+        updateDisplay(operate(operator, operand1, operand2));
+        operand1 = parseInt(input.textContent);
+        operand2 = null;
+        operatorSelected = true;
+    }
+    operator = saveOperator(e);
+
+    console.log(operator);
+}
+
 btns.forEach( button => button.addEventListener("click", (e) => {
     const btnClasses = e.target.classList;
     // clear display
@@ -46,6 +87,12 @@ btns.forEach( button => button.addEventListener("click", (e) => {
     // backspace
     if (btnClasses.contains("btnB")) removeDigit();
     // add number to display
+    if (btnClasses.contains("btnr2") && operatorSelected) {
+        clearDisplay(); 
+        operatorSelected = false;
+    }
     if (btnClasses.contains("btnr2")) updateDisplay(e.target.textContent);
-    // console.log(e);
+    
+    // console.log(Array.from(e.target.classList));
+    if (btnClasses.contains("op")) saveState(e);
 }));
