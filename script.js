@@ -20,7 +20,7 @@ function operate(operator, a, b) {
     return operator(a , b);
 }
 
-function writeToDisplay(number) {
+function updateDisplay(number) {
     let display = input.textContent;
     if (number !== "." && display === "0") clearDisplay();
     if (number === "." && display.includes("."))  number = "";
@@ -28,11 +28,24 @@ function writeToDisplay(number) {
     input.textContent += number;
 }
 
-function clearDisplay() {
-    input.textContent = "";
+function clearDisplay(number) {
+    (number !== undefined) ? number : number = ""
+    input.textContent = `${number}`;
+}
+
+function removeDigit() {
+    let digits = input.textContent;
+    (digits.length > 1) ? digits = digits.slice(0, -1) : digits = "0";
+    input.textContent = digits;
 }
 
 btns.forEach( button => button.addEventListener("click", (e) => {
-    if (e.target.classList.contains("btnr2")) writeToDisplay(e.target.textContent);
-    console.log(e);
+    const btnClasses = e.target.classList;
+    // clear display
+    if (btnClasses.contains("btnC")) clearDisplay(0);
+    // backspace
+    if (btnClasses.contains("btnB")) removeDigit();
+    // add number to display
+    if (btnClasses.contains("btnr2")) updateDisplay(e.target.textContent);
+    // console.log(e);
 }));
