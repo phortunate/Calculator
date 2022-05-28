@@ -1,9 +1,11 @@
 const input = document.querySelector(".input");
 const btns = Array.from(document.querySelectorAll("button"));
-let operatorSelected = false;
+const btnDec = document.querySelector(".btnDec");
 let operand1;
 let operand2;
 let operator;
+let operatorSelected = false;
+let isEquals = false;
 
 function add(a, b) {
     return a + b;
@@ -27,23 +29,26 @@ function operate(operator, a, b) {
 
 function updateDisplay(number) {
     let display = input.textContent;
-    if (number !== "." && display === "0") clearDisplay();
-    if (number === "." && display.includes("."))  number = "";
+    if (number === ".") btnDec.disabled = true;
+    if (display === "0") input.textContent = "";
+    if (number === "." && (display === "0" || display === "")) number = "0.";
 
     input.textContent += number;
 }
 
-function clearDisplay(number) {
-    (number !== undefined) ? number : number = ""
-    input.textContent = `${number}`;
+function clearDisplay() {
+    input.textContent = "";
+    btnDec.disabled = false;
 }
 
 function clearAll(){
-    clearDisplay(0);
+    clearDisplay();
+    input.textContent = "0";
     operand1 = null;
     operand2 = null;
     operator = null;
     operatorSelected = false;
+    isEquals = false;
 }
 
 function removeDigit() {
@@ -70,20 +75,17 @@ function saveOperator(e) {
         break;
 }
 }
-function saveState(e) {
-    if (!operatorSelected && !operand1) {
-        operand1 = parseInt(input.textContent);
-        operatorSelected = true;
-    } 
-    if (!operatorSelected && !operand2) {
+
+function computeResults() {
+    if (!operatorSelected) {
         operand2 = parseInt(input.textContent);
         clearDisplay();
         updateDisplay(operate(operator, operand1, operand2));
         operand1 = parseInt(input.textContent);
         operand2 = null;
         operatorSelected = true;
+        btnDec.disabled = false;
     }
-    operator = saveOperator(e);
 }
 
 btns.forEach( button => button.addEventListener("click", (e) => {
@@ -93,12 +95,36 @@ btns.forEach( button => button.addEventListener("click", (e) => {
     // backspace
     if (btnClasses.contains("btnB")) removeDigit();
     // add number to display
-    if (btnClasses.contains("btnr2") && operatorSelected) {
-        clearDisplay(); 
-        operatorSelected = false;
+    if (btnClasses.contains("btnr2")) {
+        if (operatorSelected) {
+            clearDisplay();
+            operatorSelected = false;
+        }
+        if (isEquals) {
+            operand1 = null;
+            isEquals = false;
+        }    
+        updateDisplay(e.target.textContent);
     }
-    if (btnClasses.contains("btnr2")) updateDisplay(e.target.textContent);
-    
-    // console.log(Array.from(e.target.classList));
-    if (btnClasses.contains("op")) saveState(e);
+
+    if (btnClasses.contains("op")) {
+        if (operand1 === null || operand1 === undefined ) {
+            operand1 = parseInt(input.textContent);
+            operatorSelected = true;
+            btnDec.disabled = false;
+        } else {
+            computeResults();
+        }
+        operator = saveOperator(e);
+        isEquals = false;
+    }
+
+    if (btnClasses.contains("btnEQ")) {
+        if (operand1 !== null && operand1 !== undefined ) {
+            computeResults();
+            isEquals = true;
+        }
+    }
 }));
+
+
