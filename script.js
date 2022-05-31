@@ -1,6 +1,5 @@
 const input = document.querySelector(".input");
 const btns = Array.from(document.querySelectorAll("button"));
-const btnDec = document.querySelector(".btnDec");
 let operand1;
 let operand2;
 let operator;
@@ -20,25 +19,25 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
-    return a / b;
+    return (b ===0) ? "LOL" : a / b;
 }
 
 function operate(operator, a, b) {
-    return operator(a , b);
+    const result =  (operator(a , b)).toString();
+    return (result.length > 13) ? result.substring(0, 13) : result;
 }
 
 function updateDisplay(number) {
     let display = input.textContent;
-    if (number === ".") btnDec.disabled = true;
+    if (number === "." && display.includes(".")) number = "";
     if (display === "0") input.textContent = "";
     if (number === "." && (display === "0" || display === "")) number = "0.";
-
+    if (display.length >= 13) number = "";
     input.textContent += number;
 }
 
 function clearDisplay() {
     input.textContent = "";
-    btnDec.disabled = false;
 }
 
 function clearAll(){
@@ -78,13 +77,12 @@ function saveOperator(e) {
 
 function computeResults() {
     if (!operatorSelected) {
-        operand2 = parseInt(input.textContent);
+        operand2 = parseFloat(input.textContent);
         clearDisplay();
         updateDisplay(operate(operator, operand1, operand2));
-        operand1 = parseInt(input.textContent);
+        operand1 = parseFloat(input.textContent);
         operand2 = null;
         operatorSelected = true;
-        btnDec.disabled = false;
     }
 }
 
@@ -109,9 +107,8 @@ btns.forEach( button => button.addEventListener("click", (e) => {
 
     if (btnClasses.contains("op")) {
         if (operand1 === null || operand1 === undefined ) {
-            operand1 = parseInt(input.textContent);
+            operand1 = parseFloat(input.textContent);
             operatorSelected = true;
-            btnDec.disabled = false;
         } else {
             computeResults();
         }
